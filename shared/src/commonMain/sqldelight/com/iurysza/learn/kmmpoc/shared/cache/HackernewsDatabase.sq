@@ -1,0 +1,23 @@
+CREATE TABLE HitStore (
+    url TEXT NOT NULL,
+    title TEXT NOT NULL,
+    storyUrl TEXT NOT NULL,
+    storyTitle TEXT NOT NULL,
+    storyId TEXT NOT NULL PRIMARY KEY,
+    relevancyScore INTEGER NOT NULL,
+    storyText TEXT NOT NULL
+);
+
+insertHit:
+INSERT INTO HitStore(url, title, storyId, storyText, storyTitle, storyUrl, relevancyScore)
+VALUES(?, ?, ?, ?, ?, ?, ?);
+
+removeAllHits:
+DELETE FROM HitStore;
+
+selectHitById:
+SELECT * FROM HitStore
+WHERE storyId = ?;
+
+selectAllHits:
+SELECT * FROM HitStore;
