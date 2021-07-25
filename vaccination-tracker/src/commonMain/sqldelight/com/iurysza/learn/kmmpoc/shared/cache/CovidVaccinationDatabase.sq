@@ -1,0 +1,37 @@
+CREATE TABLE CovidVaccinationData (
+    isoCode TEXT NOT NULL,
+    state TEXT NOT NULL,
+    singleDose INTEGER NOT NULL,
+    singleDosePercentage REAL NOT NULL,
+    firstDose INTEGER NOT NULL,
+    firstDosePercentage REAL NOT NULL,
+    secondDose INTEGER NOT NULL,
+    secondDosePercentage REAL NOT NULL,
+    fullyVaccinated INTEGER NOT NULL,
+    fullyVaccinatedPercentage REAL NOT NULL,
+    lastUpdate TEXT NOT NULL,
+    total INTEGER NOT NULL
+);
+
+insertVaccinationData:
+INSERT INTO CovidVaccinationData(
+    isoCode,
+    state,
+    singleDose,
+    singleDosePercentage,
+    firstDose,
+    firstDosePercentage,
+    secondDose,
+    secondDosePercentage,
+    fullyVaccinated,
+    fullyVaccinatedPercentage,
+    lastUpdate,
+    total
+)
+VALUES(?,?,?, ?, ?, ?, ?, ?, ?,?,?,?);
+
+clear:
+DELETE FROM CovidVaccinationData;
+
+getVaccinationData:
+SELECT * FROM CovidVaccinationData;
