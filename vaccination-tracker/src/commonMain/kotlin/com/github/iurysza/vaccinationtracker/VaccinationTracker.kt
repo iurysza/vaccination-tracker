@@ -1,11 +1,11 @@
-package com.iurysza.learn.kmmpoc.shared
+package com.github.iurysza.vaccinationtracker
 
-import com.iurysza.learn.kmmpoc.shared.cache.CovidVaccinationData
-import com.iurysza.learn.kmmpoc.shared.cache.DatabaseDriverFactory
-import com.iurysza.learn.kmmpoc.shared.cache.VaccinationTrackerDatabase
-import com.iurysza.learn.kmmpoc.shared.entity.VaccinationDataResponseItem
-import com.iurysza.learn.kmmpoc.shared.entity.toVaccinationData
-import com.iurysza.learn.kmmpoc.shared.network.VaccinationTrackerApi
+import com.github.iurysza.vaccinationtracker.cache.CovidVaccinationData
+import com.github.iurysza.vaccinationtracker.cache.DatabaseDriverFactory
+import com.github.iurysza.vaccinationtracker.cache.VaccinationTrackerDatabase
+import com.github.iurysza.vaccinationtracker.entity.VaccinationDataResponseItem
+import com.github.iurysza.vaccinationtracker.entity.toVaccinationData
+import com.github.iurysza.vaccinationtracker.network.VaccinationTrackerApi
 
 class VaccinationTracker(databaseDriverFactory: DatabaseDriverFactory) {
 

@@ -1,7 +1,7 @@
-package com.iurysza.learn.kmmpoc.shared.network
+package com.github.iurysza.vaccinationtracker.network
 
-import com.iurysza.learn.kmmpoc.shared.entity.CovidStatsSummary
-import com.iurysza.learn.kmmpoc.shared.entity.VaccinationDataResponseItem
+import com.github.iurysza.vaccinationtracker.entity.CovidStatsSummary
+import com.github.iurysza.vaccinationtracker.entity.VaccinationDataResponseItem
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer

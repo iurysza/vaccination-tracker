@@ -1,7 +1,7 @@
-package com.iurysza.learn.kmmpoc.shared.cache
+package com.github.iurysza.vaccinationtracker.cache
 
 import android.content.Context
-import com.iurysza.learn.kmmpoc.shared.cache.CovidVaccinationDatabase
+import com.github.iurysza.vaccinationtracker.cache.CovidVaccinationDatabase
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 

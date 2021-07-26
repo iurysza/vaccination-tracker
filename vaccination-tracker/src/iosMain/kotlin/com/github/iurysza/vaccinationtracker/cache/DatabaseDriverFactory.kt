@@ -1,6 +1,6 @@
-package com.iurysza.learn.kmmpoc.shared.cache
+package com.github.iurysza.vaccinationtracker.cache
 
-import com.iurysza.learn.kmmpoc.shared.cache.CovidVaccinationDatabase
+import com.github.iurysza.vaccinationtracker.cache.CovidVaccinationDatabase
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
 

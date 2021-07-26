@@ -1,4 +1,4 @@
-package com.iurysza.learn.kmmpoc.shared.cache
+package com.github.iurysza.vaccinationtracker.cache
 
 internal class VaccinationTrackerDatabase(databaseDriverFactory: DatabaseDriverFactory) {
 

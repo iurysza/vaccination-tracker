@@ -1,6 +1,6 @@
-package com.iurysza.learn.kmmpoc.shared.entity
+package com.github.iurysza.vaccinationtracker.entity
 
-import com.iurysza.learn.kmmpoc.shared.cache.CovidVaccinationData
+import com.github.iurysza.vaccinationtracker.cache.CovidVaccinationData
 
 internal fun List<CovidStatsSummary>.toVaccinationData(): List<CovidVaccinationData> = map { responseItem ->
   val vaccinations = responseItem.vaccinations

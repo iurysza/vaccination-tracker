@@ -1,6 +1,6 @@
-package com.iurysza.learn.kmmpoc.test
+package com.github.iurysza.vaccinationtracker.test
 
-import com.iurysza.learn.kmmpoc.shared.network.VaccinationTrackerApi
+import com.github.iurysza.vaccinationtracker.network.VaccinationTrackerApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.test.Test

@@ -263,7 +263,7 @@ android {
 
 sqldelight {
   database("CovidVaccinationDatabase") {
-    packageName = "com.iurysza.learn.kmmpoc.shared.cache"
+    packageName = "com.github.iurysza.vaccinationtracker.cache"
   }
 }
 

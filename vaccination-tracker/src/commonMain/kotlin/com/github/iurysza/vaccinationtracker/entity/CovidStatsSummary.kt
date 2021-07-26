@@ -1,4 +1,4 @@
-package com.iurysza.learn.kmmpoc.shared.entity
+package com.github.iurysza.vaccinationtracker.entity
 
 import kotlinx.serialization.Serializable
 
