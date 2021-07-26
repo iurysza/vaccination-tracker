@@ -27,7 +27,7 @@ afterEvaluate {
                 artifactId PUBLISH_ARTIFACT_ID
                 version PUBLISH_VERSION
 
-                // Two artifacts, the `aar` (or `jar`) and the sources
+                // The aar or jar and their sources
                 if (project.plugins.findPlugin("com.android.library")) {
                     from components.release
                 } else {
@@ -39,7 +39,7 @@ afterEvaluate {
 
                 pom {
                     name = PUBLISH_ARTIFACT_ID
-                    description = 'A Kotlin Multiplatform library for getting Brazilian vaccination data'
+                    description = 'A Kotlin library that provides Brazilian vaccination data'
                     url = 'https://github.com/iurysza/kmmpoc'
                     licenses {
                         license {
@@ -54,7 +54,6 @@ afterEvaluate {
                             email = 'iurysza@gmail.com'
                         }
                     }
-
                     scm {
                         connection = 'scm:git:github.com/iurysza/kmmpoc.git'
                         developerConnection = 'scm:git:ssh://github.com/iurysza/kmmpoc.git'
