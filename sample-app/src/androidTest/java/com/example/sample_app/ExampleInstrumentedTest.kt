@@ -1,24 +1,24 @@
 package com.example.sample_app
 
-import androidx.test.platform.app.InstrumentationRegistry
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import com.github.iurysza.vaccinationtracker.VaccinationTracker
+import com.github.iurysza.vaccinationtracker.cache.DatabaseDriverFactory
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import org.junit.Assert.*
-
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
   @Test
-  fun useAppContext() {
-    // Context of the app under test.
+  fun dataIsActuallyLoading() {
     val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    assertEquals("com.example.sample_app", appContext.packageName)
+    runBlocking {
+      val sdk = VaccinationTracker(DatabaseDriverFactory(appContext))
+      val result = sdk.getVaccinationData(true)
+      Log.d("TEST", result.toString())
+      assert(result.isNotEmpty())
+    }
   }
 }

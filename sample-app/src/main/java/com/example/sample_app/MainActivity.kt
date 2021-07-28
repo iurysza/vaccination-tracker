@@ -1,6 +1,7 @@
 package com.example.sample_app
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.github.iurysza.vaccinationtracker.VaccinationTracker
 import com.github.iurysza.vaccinationtracker.cache.DatabaseDriverFactory
@@ -12,11 +13,11 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
     runBlocking {
       runCatching {
-        val sdk = VaccinationTracker(DatabaseDriverFactory(this@MainActivity))
+        val sdk = VaccinationTracker(DatabaseDriverFactory(applicationContext))
         val result = sdk.getVaccinationData(true)
-        android.util.Log.e("=====================", "onCreate: $result")
+        Log.d("SAMPLE-APP", "getVaccinationData: $result")
       }.onFailure {
-        android.util.Log.e("=====================", "onCreate:", it)
+        Log.e("SAMPLE-APP", "getVaccinationData:", it)
       }
     }
   }

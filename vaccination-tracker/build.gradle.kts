@@ -229,8 +229,8 @@ kotlin {
 }
 
 fun bumpPodSpecVersion(cocoaRepoPath: String): Boolean {
-  val podspec = File("$cocoaRepoPath/kmmpoc.podspec")
-  val tempFile = File("$cocoaRepoPath/podspec.bak")
+  val podspec = File("$cocoaRepoPath/vaccination-tracker.podspec")
+  val tempFile = File("$cocoaRepoPath/vaccination-tracker.bak")
   val reader = podspec.bufferedReader()
   val writer = tempFile.bufferedWriter()
   var currentLine: String?
