@@ -12,8 +12,8 @@ import kotlinx.coroutines.runBlocking
 class PrintVaccinationData : CliktCommand() {
 
   private val forceUpdate by option("-f", "--force", help = "Get latest data (updated once a day)").flag()
-  private val state by option(help = "data for state")
-  private val data: Pair<String, String>? by option(help = "data point").pair()
+  private val state by option(help = """data for state: state-iso-code: sp, mg, etc """)
+  private val data: Pair<String, String>? by option(help = "data point: [first | second | single | full] [% | full]").pair()
 
   private val sdk = VaccinationTracker(databaseDriverFactory = DatabaseDriverFactory())
 
