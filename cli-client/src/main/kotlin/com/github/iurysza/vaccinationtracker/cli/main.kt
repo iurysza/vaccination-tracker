@@ -26,7 +26,8 @@ class PrintVaccinationData : CliktCommand() {
       val (value, matchReason) = getDataValue(stateData)
       echo("$matchReason: $value")
     } else {
-      echo("wrong state iso code")
+      echo("Data by state: ")
+      vaccinationData.forEach { println(it) }
     }
   }
 
@@ -44,6 +45,12 @@ class PrintVaccinationData : CliktCommand() {
         when (type) {
           "%" -> vaccinationData.secondDosePercentage.toString() to "Second Dose percentage"
           else -> vaccinationData.secondDose.toString() to "Second Dose"
+        }
+        }
+        data.matches("single") -> {
+        when (type) {
+          "%" -> vaccinationData.secondDosePercentage.toString() to "Single Dose percentage"
+          else -> vaccinationData.secondDose.toString() to "Single Dose"
         }
       }
       data.matches("full") -> {
