@@ -31,14 +31,15 @@ application {
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
-  baseName = "${PUBLISH_ARTIFACT_ID}-fat"
+  archiveName = PUBLISH_ARTIFACT_ID
   manifest {
     attributes["Implementation-Title"] = PUBLISH_ARTIFACT_ID
-    attributes["Implementation-Version"] = version
+    attributes["Implementation-Version"] = PUBLISH_VERSION
     attributes["Main-Class"] = "com.github.iurysza.vaccinationtracker.cli.MainKt"
   }
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
   from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+  destinationDir = buildDir.resolve(project.buildDir)
   with(tasks.jar.get() as CopySpec)
 }
 
