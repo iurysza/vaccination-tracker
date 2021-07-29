@@ -66,6 +66,4 @@ class PrintVaccinationData : CliktCommand() {
   private fun String?.matches(dataPointName: String) = this.toString() in dataPointName
 }
 
-
-
 fun main(args: Array<String>) = PrintVaccinationData().main(args)
