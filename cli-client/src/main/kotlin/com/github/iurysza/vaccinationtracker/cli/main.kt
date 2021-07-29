@@ -27,7 +27,7 @@ class PrintVaccinationData : CliktCommand() {
       echo("$matchReason: $value")
     } else {
       echo("Data by state: ")
-      vaccinationData.forEach { println(it) }
+      vaccinationData.forEach { echo(it) }
     }
   }
 
