@@ -1,6 +1,6 @@
 rootProject.name = "vaccination-tracker-project"
 
 include(
-  ":sample-app",
+  ":cli-client",
   ":vaccination-tracker"
 )

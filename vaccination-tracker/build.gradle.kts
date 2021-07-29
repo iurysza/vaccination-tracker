@@ -31,6 +31,8 @@ kotlin {
     binaries.framework(PUBLISH_ARTIFACT_ID)
   }
 
+  jvm()
+
   android {
     publishAllLibraryVariants()
     publishLibraryVariantsGroupedByFlavor = true
@@ -58,7 +60,6 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
-
     val androidMain by getting {
       dependencies {
         implementation("io.ktor:ktor-client-android:$ktorVersion")
@@ -66,6 +67,13 @@ kotlin {
       }
     }
     val androidTest by getting
+
+    val jvmMain by getting {
+      dependencies {
+        implementation("io.ktor:ktor-client-cio:$ktorVersion")
+        implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
+      }
+    }
 
     val iosMain by getting {
       dependencies {
