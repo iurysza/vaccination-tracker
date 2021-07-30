@@ -3,7 +3,7 @@ package com.github.iurysza.vaccinationtracker.entity
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class CovidStatsSummary(
+data class CovidStatsSummary(
   val cases: Cases,
   val deaths: Deaths,
   val iso_code: String,
@@ -15,7 +15,7 @@ internal data class CovidStatsSummary(
 )
 
 @Serializable
-internal data class Cases(
+data class Cases(
   val date: String,
   val last_update: String,
   val new: Int? = null,
@@ -23,7 +23,7 @@ internal data class Cases(
 )
 
 @Serializable
-internal data class Deaths(
+data class Deaths(
   val date: String,
   val last_update: String,
   val new: Int? = null,
@@ -31,21 +31,21 @@ internal data class Deaths(
 )
 
 @Serializable
-internal data class Recovered(
+data class Recovered(
   val date: String,
   val last_update: String,
   val total: Int
 )
 
 @Serializable
-internal data class Suspects(
+data class Suspects(
   val date: String,
   val last_update: String,
   val total: Int
 )
 
 @Serializable
-internal data class Tests(
+data class Tests(
   val date: String,
   val last_update: String,
   val total: Int
