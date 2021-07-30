@@ -3,7 +3,6 @@
 import org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 plugins {
   kotlin("multiplatform")
@@ -20,7 +19,7 @@ repositories {
 
 val PUBLISH_GROUP_ID: String by extra("com.github.iurysza")
 val PUBLISH_ARTIFACT_ID: String by extra("vaccination-tracker")
-val PUBLISH_VERSION: String by extra("1.0.17")
+val PUBLISH_VERSION: String by extra("1.0.18")
 
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
@@ -60,6 +59,7 @@ kotlin {
         implementation(kotlin("test-annotations-common"))
       }
     }
+
     val androidMain by getting {
       dependencies {
         implementation("io.ktor:ktor-client-android:$ktorVersion")
@@ -74,6 +74,7 @@ kotlin {
         implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
       }
     }
+    val jvmTest by getting
 
     val iosMain by getting {
       dependencies {
@@ -87,20 +88,21 @@ kotlin {
   tasks {
     val cocoaRepoPath = "$rootDir/../kmm-poc-cocoa"
 
-    register("gitCheckoutDev") {
-      group = "git"
-      project.exec {
+    fun runGit(vararg options: String) {
+      exec {
         workingDir = File(cocoaRepoPath)
-        commandLine("git", "checkout", "develop").standardOutput
+        commandLine("git", *options).standardOutput
       }
     }
 
-    register("gitCheckoutMaster") {
+    register("gitCheckoutCocoaRepoDevelop") {
       group = "git"
-      project.exec {
-        workingDir = File(cocoaRepoPath)
-        commandLine("git", "checkout", "master").standardOutput
-      }
+      runGit("checkout", "develop")
+    }
+
+    register("gitCheckoutCocoaRepoMaster") {
+      group = "git"
+      runGit("checkout", "master")
     }
 
     register("universalDebugFramework", FatFrameworkTask::class) {
@@ -121,7 +123,6 @@ kotlin {
     register("universalReleaseFramework", FatFrameworkTask::class) {
       baseName = PUBLISH_ARTIFACT_ID
       group = "iOS universal framework"
-
       description = "Create the release framework for iOs"
       dependsOn(
         "linkVaccination-trackerReleaseFrameworkIosArm64",
@@ -143,60 +144,49 @@ kotlin {
       )
     }
 
+    fun bumpPodSpecVersion(): Boolean {
+      val podspec = File("$cocoaRepoPath/vaccination-tracker.podspec")
+      val tempFile = File("$cocoaRepoPath/vaccination-tracker.bak")
+      val reader = podspec.bufferedReader()
+      val writer = tempFile.bufferedWriter()
+      var currentLine: String?
+
+      while (reader.readLine().also { currLine -> currentLine = currLine } != null) {
+        if (currentLine?.startsWith("s.version") == true) {
+          writer.write("""s.version       = "$PUBLISH_VERSION"${System.lineSeparator()}""")
+        } else {
+          writer.write(currentLine + System.lineSeparator())
+        }
+      }
+      writer.close()
+      reader.close()
+      return tempFile.renameTo(podspec)
+    }
+
     register("publishDevFramework") {
       description = "Publish iOs debug framework to the Cocoa Repo"
       group = "iOS publishing"
-      dependsOn("gitCheckoutDev", "universalDebugFramework")
+      dependsOn("gitCheckoutCocoaRepoDevelop", "universalDebugFramework")
       doLast {
-        val isSuccessful = bumpPodSpecVersion(cocoaRepoPath)
-
-        if (isSuccessful) {
-          val dateFormatter = SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault())
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "add", ".").standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine(
-              "git",
-              "commit",
-              "-m",
-              "New dev release: ${PUBLISH_VERSION}-${dateFormatter.format(Date())}"
-            ).standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "push", "origin", "develop").standardOutput
-          }
+        if (bumpPodSpecVersion()) {
+          val nowString = SimpleDateFormat("dd/MM/yyyy - HH:mm").format(Date())
+          runGit("add", ".")
+          runGit("commit", "-m", "New dev release: ${PUBLISH_VERSION}-$nowString")
+          runGit("push", "origin", "develop")
         }
       }
     }
 
     register("publishReleaseFramework") {
-      description = "Publish iOs release framework to the Cocoa Repo"
+      description = "gitCheckoutCocoaRepoDevelop"
       group = "iOS publishing"
-      dependsOn("gitCheckoutMaster", "universalReleaseFramework")
+      dependsOn("gitCheckoutCocoaRepoMaster", "universalReleaseFramework")
       doLast {
-        val isSuccessful = bumpPodSpecVersion(cocoaRepoPath)
-
-        if (isSuccessful) {
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "add", ".").standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "commit", "-m", "\"New release: ${PUBLISH_VERSION}\"").standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "tag", PUBLISH_VERSION).standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "push", "origin", "master", "--tags").standardOutput
-          }
+        if (bumpPodSpecVersion()) {
+          runGit("add", ".")
+          runGit("commit", "-m", """ "New release: $PUBLISH_VERSION" """)
+          runGit("tag", PUBLISH_VERSION)
+          runGit("push", "origin", "master", "--tags")
         }
       }
     }
@@ -206,55 +196,17 @@ kotlin {
         "Publish JVM and Android artifacts to MavenCentral and push iOs framework to the Cocoa Repo"
       group = "publish all"
       dependsOn(
+        ":vaccination-tracker:publishJvmPublicationToMavenLocal",
+        ":vaccination-tracker:publishJvmPublicationToSonatypeRepository",
+
         ":vaccination-tracker:publishReleasePublicationToMavenLocal",
         ":vaccination-tracker:publishReleasePublicationToSonatypeRepository",
-        "universalReleaseFramework"
+
+        "publishReleaseFramework"
       )
-      doLast {
-        val isSuccessful = bumpPodSpecVersion(cocoaRepoPath)
-        if (isSuccessful) {
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "add", ".").standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "commit", "-m", "\"New release: ${PUBLISH_VERSION}\"").standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "tag", PUBLISH_VERSION).standardOutput
-          }
-          project.exec {
-            workingDir = File(cocoaRepoPath)
-            commandLine("git", "push", "origin", "master", "--tags").standardOutput
-          }
-          println("""""git", "commit", "-m", "\"New release: ${PUBLISH_VERSION}\"""")
-        }
-      }
     }
   }
 }
-
-fun bumpPodSpecVersion(cocoaRepoPath: String): Boolean {
-  val podspec = File("$cocoaRepoPath/vaccination-tracker.podspec")
-  val tempFile = File("$cocoaRepoPath/vaccination-tracker.bak")
-  val reader = podspec.bufferedReader()
-  val writer = tempFile.bufferedWriter()
-  var currentLine: String?
-
-  while (reader.readLine().also { currLine -> currentLine = currLine } != null) {
-    if (currentLine?.startsWith("s.version") == true) {
-      writer.write("""s.version       = "$PUBLISH_VERSION"${System.lineSeparator()}""")
-    } else {
-      writer.write(currentLine + System.lineSeparator())
-    }
-  }
-  writer.close()
-  reader.close()
-  return tempFile.renameTo(podspec)
-}
-
 android {
   compileSdk = 29
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")

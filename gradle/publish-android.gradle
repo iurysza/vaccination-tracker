@@ -44,7 +44,7 @@ afterEvaluate {
                     licenses {
                         license {
                             name = 'Vaccination Tracker Licence'
-                            url = 'https://github.com/iurysza/kmmpoc/blob/master/LICENSE'
+                            url = 'https://github.com/iurysza/vaccination-tracker/blob/master/LICENSE'
                         }
                     }
                     developers {
@@ -55,9 +55,9 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        connection = 'scm:git:github.com/iurysza/kmmpoc.git'
-                        developerConnection = 'scm:git:ssh://github.com/iurysza/kmmpoc.git'
-                        url = 'https://github.com/iurysza/kmmpoc/tree/master'
+                        connection = 'scm:git:github.com/iurysza/vaccination-tracker.git'
+                        developerConnection = 'scm:git:ssh://github.com/iurysza/vaccination-tracker.git'
+                        url = 'https://github.com/iurysza/vaccination-tracker/tree/master'
                     }
                 }
             }
