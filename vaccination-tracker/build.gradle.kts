@@ -1,4 +1,4 @@
-@file:Suppress("PropertyName")
+@file:Suppress("PropertyName", "SpellCheckingInspection")
 
 import org.jetbrains.kotlin.gradle.tasks.FatFrameworkTask
 import java.text.SimpleDateFormat
@@ -86,21 +86,21 @@ kotlin {
   }
 
   tasks {
-    val cocoaRepoPath = "$rootDir/../kmm-poc-cocoa"
+    val podRepoPath = "$rootDir/../vacctracker-pod-repo"
 
     fun runGit(vararg options: String) {
       exec {
-        workingDir = File(cocoaRepoPath)
+        workingDir = File(podRepoPath)
         commandLine("git", *options).standardOutput
       }
     }
 
-    register("gitCheckoutCocoaRepoDevelop") {
+    register("gitCheckoutPodRepoDevelop") {
       group = "git"
       runGit("checkout", "develop")
     }
 
-    register("gitCheckoutCocoaRepoMaster") {
+    register("gitCheckoutPodRepoMaster") {
       group = "git"
       runGit("checkout", "master")
     }
@@ -113,7 +113,7 @@ kotlin {
         iosArm64().binaries.getFramework(PUBLISH_ARTIFACT_ID, "Debug"),
         iosX64().binaries.getFramework(PUBLISH_ARTIFACT_ID, "Debug")
       )
-      destinationDir = buildDir.resolve(cocoaRepoPath)
+      destinationDir = buildDir.resolve(podRepoPath)
       dependsOn(
         "linkVaccination-trackerDebugFrameworkIosArm64",
         "linkVaccination-trackerDebugFrameworkIosX64"
@@ -132,7 +132,7 @@ kotlin {
         iosArm64().binaries.getFramework(PUBLISH_ARTIFACT_ID, "Release"),
         iosX64().binaries.getFramework(PUBLISH_ARTIFACT_ID, "Release")
       )
-      destinationDir = buildDir.resolve(cocoaRepoPath)
+      destinationDir = buildDir.resolve(podRepoPath)
     }
 
     register("universalFramework") {
@@ -145,8 +145,8 @@ kotlin {
     }
 
     fun bumpPodSpecVersion(): Boolean {
-      val podspec = File("$cocoaRepoPath/vaccination-tracker.podspec")
-      val tempFile = File("$cocoaRepoPath/vaccination-tracker.bak")
+      val podspec = File("$podRepoPath/vaccination-tracker.podspec")
+      val tempFile = File("$podRepoPath/vaccination-tracker.bak")
       val reader = podspec.bufferedReader()
       val writer = tempFile.bufferedWriter()
       var currentLine: String?
@@ -164,9 +164,9 @@ kotlin {
     }
 
     register("publishDevFramework") {
-      description = "Publish iOs debug framework to the Cocoa Repo"
+      description = "Publish iOs debug framework to the Pod Repo"
       group = "iOS publishing"
-      dependsOn("gitCheckoutCocoaRepoDevelop", "universalDebugFramework")
+      dependsOn("gitCheckoutPodRepoDevelop", "universalDebugFramework")
       doLast {
         if (bumpPodSpecVersion()) {
           val nowString = SimpleDateFormat("dd/MM/yyyy - HH:mm").format(Date())
@@ -178,9 +178,9 @@ kotlin {
     }
 
     register("publishReleaseFramework") {
-      description = "gitCheckoutCocoaRepoDevelop"
+      description = "gitCheckoutPodRepoDevelop"
       group = "iOS publishing"
-      dependsOn("gitCheckoutCocoaRepoMaster", "universalReleaseFramework")
+      dependsOn("gitCheckoutPodRepoMaster", "universalReleaseFramework")
       doLast {
         if (bumpPodSpecVersion()) {
           runGit("add", ".")
@@ -193,7 +193,7 @@ kotlin {
 
     register("publishAll") {
       description =
-        "Publish JVM and Android artifacts to MavenCentral and push iOs framework to the Cocoa Repo"
+        "Publish JVM and Android artifacts to MavenCentral and push iOs framework to the Pod Repo"
       group = "publish all"
       dependsOn(
         ":vaccination-tracker:publishJvmPublicationToMavenLocal",
