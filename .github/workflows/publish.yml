@@ -18,6 +18,13 @@ jobs:
           distribution: adopt
           java-version: 11
 
+        # Builds the release artifacts of the library
+      - name: Release build
+        run: ./gradlew :vaccination-tracker:assembleRelease
+
+        # Generates other artifacts (javadocJar is optional)
+      - name: Source jar
+        run: ./gradlew androidSourcesJar
 
         # Runs upload, and then closes & releases the repository
       - name: Publish to MavenCentral
