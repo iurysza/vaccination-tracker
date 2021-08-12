@@ -18,6 +18,10 @@ jobs:
           distribution: adopt
           java-version: 11
 
+      - name: Test secrets
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        run: echo $OSSRH_USERNAME
         # Builds the release artifacts of the library
       - name: Release build
         run: ./gradlew :vaccination-tracker:assembleRelease
