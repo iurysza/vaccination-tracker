@@ -19,7 +19,7 @@ repositories {
 
 val PUBLISH_GROUP_ID: String by extra("com.github.iurysza")
 val PUBLISH_ARTIFACT_ID: String by extra("vaccination-tracker")
-val PUBLISH_VERSION: String by extra("1.0.20")
+val PUBLISH_VERSION: String by extra("1.0.22")
 
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
