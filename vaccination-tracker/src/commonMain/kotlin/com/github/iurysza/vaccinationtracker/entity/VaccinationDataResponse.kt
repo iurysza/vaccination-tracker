@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class VaccinationDataResponseItem(
     @SerialName("average_14days")
-    val average14Days: Average14days,
+    val average14Days: Average14days?=null,
 
     @SerialName("average_7days")
-    val average7Days: Average7days,
+    val average7Days: Average7days?=null,
 
     @SerialName("daily_vaccinations")
-    val dailyVaccinations: DailyVaccinations,
+    val dailyVaccinations: DailyVaccinations?=null,
 
     @SerialName("iso_code")
     val isoCode: String,
@@ -49,26 +49,26 @@ data class VaccinationDataResponseItem(
 @Serializable
 data class Average7days(
     @SerialName("0")
-    val singleDose: Int,
+    val singleDose: Int?=null,
     @SerialName("1")
-    val firstDose:Int,
+    val firstDose:Int?=null,
     @SerialName("2")
-    val secondDose: Int,
+    val secondDose: Int?=null,
     @SerialName("per_million")
-    val perMillion: Int,
+    val perMillion: Int?=null,
     val total: Int
 )
 
 @Serializable
 data class Average14days(
     @SerialName("0")
-    val singleDose: Int,
+    val singleDose: Int?=null,
     @SerialName("1")
-    val firstDose:Int,
+    val firstDose:Int?=null,
     @SerialName("2")
-    val secondDose: Int,
+    val secondDose: Int?=null,
     @SerialName("per_million")
-    val perMillion: Int,
+    val perMillion: Int?=null,
     val total: Int
 )
 
