@@ -5,6 +5,8 @@
 - [multiplatform-client](https://github.com/iurysza/multiplaform-client)
 - [android-client](https://github.com/iurysza/vactracker-android-client)
 - [ios-client](https://github.com/iurysza/vacctracker-ios-client)
+- [react-native-wrapper](https://github.com/iurysza/vacctracker-ios-client)
+
 
 A library that provides Brazilian vaccination data targeting iOS, Android and the Jvm.
 
